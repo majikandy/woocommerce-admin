@@ -44,7 +44,7 @@ const SummaryList = ( { children, isDropdownBreakpoint, label } ) => {
 
 	return (
 		<Dropdown
-			className="woocommerce-summary"
+			className="woocommerce-summary is-dropdown"
 			position="bottom"
 			headerTitle={ label }
 			renderToggle={ ( { isOpen, onToggle } ) =>

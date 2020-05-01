@@ -22,14 +22,6 @@ $inner-border: $core-grey-light-500;
 
 @mixin wrap-contents() {
 	.woocommerce-summary__item-value,
-	.woocommerce-summary__item-delta {
-		min-width: 100%;
-	}
-
-	.woocommerce-summary__item-prev-label,
-	.woocommerce-summary__item-prev-value {
-		display: block;
-	}
 
 	&.is-placeholder {
 		.woocommerce-summary__item-prev-label {
@@ -61,8 +53,9 @@ $inner-border: $core-grey-light-500;
 		}
 	}
 
+	// @todo this poses a problem for popovers in the dropdown, ie tooltips
 	// Specificity
-	.components-popover.components-popover {
+	&.is-dropdown .components-popover.components-popover {
 		// !important to override element-level styles
 		position: static !important;
 		top: auto !important;
@@ -94,17 +87,12 @@ $inner-border: $core-grey-light-500;
 		}
 	}
 
-	.components-popover__content & {
+	&.is-dropdown .components-popover__content & {
 		max-height: 100%;
 		margin-top: 0;
 		margin-bottom: 0;
 		overflow-y: auto;
 		border: none;
-	}
-
-	.woocommerce-summary__item-data {
-		display: flex;
-		flex-wrap: wrap;
 	}
 
 	.woocommerce-summary__item-value,
@@ -250,13 +238,11 @@ $inner-border: $core-grey-light-500;
 		}
 
 		.woocommerce-summary__item-value,
-		.woocommerce-summary__item-delta-value,
-		.woocommerce-summary__item-prev-label,
-		.woocommerce-summary__item-prev-value {
+		.woocommerce-summary__item-delta-value {
 			@include placeholder();
 			display: inline-block;
 			height: 16px;
-			min-width: auto;
+			// min-width: auto;
 		}
 
 		.woocommerce-summary__item-value {
@@ -267,14 +253,6 @@ $inner-border: $core-grey-light-500;
 		.woocommerce-summary__item-delta-value {
 			margin-top: 2.2px;
 			width: 50px;
-		}
-
-		.woocommerce-summary__item-prev-label {
-			width: 80px;
-		}
-
-		.woocommerce-summary__item-prev-value {
-			width: 40px;
 		}
 	}
 }
@@ -291,11 +269,11 @@ $inner-border: $core-grey-light-500;
 	text-decoration: none;
 
 	&:hover {
-		background-color: $core-grey-light-200;
+		background-color: $light-gray-100;
 	}
 
 	&:active {
-		background-color: $core-grey-light-300;
+		background-color: $light-gray-200;
 	}
 
 	&:focus {
@@ -322,14 +300,14 @@ $inner-border: $core-grey-light-500;
 	}
 
 	.woocommerce-summary__item-data {
-		margin-top: auto;
+		display: flex;
+		justify-content: space-between;
 	}
 
 	.woocommerce-summary__item-label {
 		display: block;
 		margin-bottom: $gap;
 		@include font-size( 11 );
-		text-transform: uppercase;
 		color: $core-grey-dark-300;
 	}
 
@@ -341,10 +319,13 @@ $inner-border: $core-grey-light-500;
 	}
 
 	.woocommerce-summary__item-delta {
-		margin-bottom: $gap-small;
 		@include font-size( 18 );
 		font-weight: 300;
-		color: $core-grey-dark-500;
+		color: $white;
+		padding: 4px;
+		border-radius: 3px;
+		// @todo Check this color with Jay. It will show for zero delta values
+		background-color: $core-grey-dark-300;
 	}
 
 	&.is-selected {
@@ -361,37 +342,11 @@ $inner-border: $core-grey-light-500;
 	}
 
 	&.is-good-trend .woocommerce-summary__item-delta {
-		color: $valid-green;
+		background-color: $alert-green;
 	}
 
 	&.is-bad-trend .woocommerce-summary__item-delta {
-		color: $error-red;
-	}
-
-	.woocommerce-summary__item-delta-icon {
-		vertical-align: middle;
-		margin-right: 3px;
-		fill: currentColor;
-
-		/*!rtl:ignore*/
-		.rtl &.gridicons-arrow-right {
-			transform: scaleX(-1);
-		}
-
-		&.gridicons-arrow-up {
-			transform: rotate(45deg);
-		}
-
-		&.gridicons-arrow-down {
-			transform: rotate(-45deg);
-		}
-	}
-
-	.woocommerce-summary__item-prev-label,
-	.woocommerce-summary__item-prev-value {
-		@include font-size( 13 );
-		color: $core-grey-dark-500;
-		display: inline-block;
+		background-color: $alert-red;
 	}
 
 	.woocommerce-summary__toggle {
@@ -416,11 +371,6 @@ $inner-border: $core-grey-light-500;
 		.woocommerce-summary__item-delta {
 			@include font-size( 13 );
 			margin-bottom: 0;
-		}
-
-		.woocommerce-summary__item-prev-label,
-		.woocommerce-summary__item-prev-value {
-			@include font-size( 11 );
 		}
 	}
 }

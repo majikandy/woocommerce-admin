@@ -74,4 +74,37 @@ $outer-border: $core-grey-light-700;
 	.woocommerce-summary__item-container:nth-of-type(even) .woocommerce-summary__item {
 		border-right: none;
 	}
+
+	.woocommerce-summary__item {
+		background-color: $studio-white;
+
+		&:hover {
+			background-color: $light-gray-100;
+		}
+	
+		&:active {
+			background-color: $light-gray-200;
+		}
+	}
+}
+
+.woocommerce-stats-overview__stats {
+	margin: 0;
+
+	.woocommerce-summary__item-container {
+		width: 50%;
+		display: inline-block;
+	}
+
+	.woocommerce-summary__item-container:nth-last-of-type(1) .woocommerce-summary__item {
+		border-bottom: none;
+	}
+
+	&.is-even .woocommerce-summary__item-container:nth-last-of-type(2) .woocommerce-summary__item {
+		border-bottom: none;
+	}
+
+	.woocommerce-summary__item-container:nth-of-type(even) .woocommerce-summary__item {
+		border-right: none;
+	}
 }
