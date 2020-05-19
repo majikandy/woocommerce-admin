@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import { withDispatch } from '@wordpress/data';
-import { filter, has } from 'lodash';
+import { filter } from 'lodash';
 
 /**
  * Internal dependencies
@@ -52,13 +52,17 @@ class InboxPanel extends Component {
 	getUnreadNotesCount() {
 		const { lastRead, notes } = this.props;
 
-		const unreadNotes = filter( notes, ( note )=> {
-			const { is_deleted: isDeleted, date_created_gmt: dateCreatedGmt } = note;
-			const noteActive = has( note, 'is_deleted' ) ? ! isDeleted : true;
-			if ( noteActive ) {
-				return ! lastRead ||
+		const unreadNotes = filter( notes, ( note ) => {
+			const {
+				is_deleted: isDeleted,
+				date_created_gmt: dateCreatedGmt,
+			} = note;
+			if ( ! isDeleted ) {
+				return (
+					! lastRead ||
 					! dateCreatedGmt ||
-					new Date( dateCreatedGmt + 'Z' ).getTime() > lastRead;
+					new Date( dateCreatedGmt + 'Z' ).getTime() > lastRead
+				);
 			}
 		} );
 		return unreadNotes.length;
@@ -83,11 +87,10 @@ class InboxPanel extends Component {
 	hasValidNotes() {
 		const { notes } = this.props;
 
-		const validNotes = filter( notes, ( note )=> {
-				const { is_deleted: isDeleted } = note;
-				const noteActive = has( note, 'is_deleted' ) ? ! isDeleted : true;
-				return noteActive;
-			} );
+		const validNotes = filter( notes, ( note ) => {
+			const { is_deleted: isDeleted } = note;
+			return ! isDeleted;
+		} );
 		return validNotes.length > 0;
 	}
 
@@ -144,7 +147,10 @@ class InboxPanel extends Component {
 				{ ( hasNotes || isRequesting ) && (
 					<ActivityHeader
 						title={ __( 'Inbox', 'woocommerce-admin' ) }
-						subtitle={ __( 'Insights and growth tips for your business', 'woocommerce-admin' ) }
+						subtitle={ __(
+							'Insights and growth tips for your business',
+							'woocommerce-admin'
+						) }
 						unreadMessages={ this.getUnreadNotesCount() }
 					/>
 				) }
@@ -188,6 +194,7 @@ export default compose(
 				'date_created_gmt',
 				'layout',
 				'image',
+				'is_deleted',
 			],
 		};
 
