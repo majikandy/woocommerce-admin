@@ -14,6 +14,7 @@ import {
 	getNewPath,
 	getPersistedQuery,
 	getHistory,
+	getFeatureFlag,
 } from '@woocommerce/navigation';
 import { Spinner } from '@woocommerce/components';
 
@@ -48,7 +49,7 @@ export const getPages = () => {
 	const pages = [];
 	const initialBreadcrumbs = [ [ '', wcSettings.woocommerceTranslation ] ];
 
-	if ( window.wcAdminFeatures.devdocs ) {
+	if ( getFeatureFlag( 'devdocs' ) ) {
 		pages.push( {
 			container: DevDocs,
 			path: '/devdocs',
@@ -71,8 +72,8 @@ export const getPages = () => {
 	}
 
 	if (
-		window.wcAdminFeatures[ 'analytics-dashboard' ] &&
-		! window.wcAdminFeatures.homepage
+		getFeatureFlag( 'analytics-dashboard' ) &&
+		! getFeatureFlag( 'homepage' )
 	) {
 		pages.push( {
 			container: Dashboard,
@@ -85,7 +86,7 @@ export const getPages = () => {
 		} );
 	}
 
-	if ( window.wcAdminFeatures.homepage ) {
+	if ( getFeatureFlag( 'homepage' ) ) {
 		pages.push( {
 			container: Homepage,
 			path: '/',
@@ -97,8 +98,8 @@ export const getPages = () => {
 		} );
 	}
 
-	if ( window.wcAdminFeatures.analytics ) {
-		if ( window.wcAdminFeatures.homepage ) {
+	if ( getFeatureFlag( 'analytics' ) ) {
+		if ( getFeatureFlag( 'homepage' ) ) {
 			pages.push( {
 				container: Dashboard,
 				path: '/analytics/overview',
@@ -114,7 +115,7 @@ export const getPages = () => {
 			} );
 		}
 		const ReportWpOpenMenu = `toplevel_page_wc-admin-path--analytics-${
-			window.wcAdminFeatures.homepage ? 'overview' : 'revenue'
+			getFeatureFlag( 'homepage' ) ? 'overview' : 'revenue'
 		}`;
 
 		pages.push( {
@@ -162,7 +163,7 @@ export const getPages = () => {
 		} );
 	}
 
-	if ( window.wcAdminFeatures.marketing ) {
+	if ( getFeatureFlag( 'marketing' ) ) {
 		pages.push( {
 			container: MarketingOverview,
 			path: '/marketing',
@@ -245,7 +246,7 @@ export function updateLinkHref( item, nextQuery, excludedScreens ) {
 	if ( isWCAdmin ) {
 		const search = last( item.href.split( '?' ) );
 		const query = parse( search );
-		const defaultPath = window.wcAdminFeatures.homepage
+		const defaultPath = getFeatureFlag( 'homepage' )
 			? 'homepage'
 			: 'dashboard';
 		const path = query.path || defaultPath;

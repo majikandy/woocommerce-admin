@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 /**
  * WooCommerce dependencies
  */
-import { getNewPath } from '@woocommerce/navigation';
+import { getNewPath, getFeatureFlag } from '@woocommerce/navigation';
 import { Link } from '@woocommerce/components';
 import { getAdminLink, getSetting } from '@woocommerce/wc-admin-settings';
 
@@ -135,7 +135,7 @@ class Header extends Component {
 						);
 					} ) }
 				</h1>
-				{ window.wcAdminFeatures[ 'activity-panels' ] && (
+				{ getFeatureFlag( 'activity-panels' ) && (
 					<ActivityPanel />
 				) }
 			</div>

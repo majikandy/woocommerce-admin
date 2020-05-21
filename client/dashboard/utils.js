@@ -8,6 +8,7 @@ import { without } from 'lodash';
  * Internal dependencies
  */
 import { getSetting } from '@woocommerce/wc-admin-settings';
+import { getFeatureFlag } from '@woocommerce/navigation';
 
 /**
  * Gets the country code from a country:state value string.
@@ -108,7 +109,7 @@ export function getPriceValue( string ) {
  * @return {boolean} True if the onboarding is enabled.
  */
 export function isOnboardingEnabled() {
-	if ( ! window.wcAdminFeatures.onboarding ) {
+	if ( ! getFeatureFlag( 'onboarding' ) ) {
 		return false;
 	}
 

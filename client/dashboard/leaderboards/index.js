@@ -18,6 +18,7 @@ import {
 	SectionHeader,
 } from '@woocommerce/components';
 import { getSetting } from '@woocommerce/wc-admin-settings';
+import { getFeatureFlag } from '@woocommerce/navigation';
 
 /**
  * Internal dependencies
@@ -112,9 +113,8 @@ class Leaderboards extends Component {
 							) }
 							onChange={ this.setRowsPerTable }
 						/>
-						{ window.wcAdminFeatures[
-							'analytics-dashboard/customizable'
-						] && (
+						{ getFeatureFlag( 'analytics-dashboard/customizable' )
+						&& (
 							<Controls
 								onToggle={ onToggle }
 								onMove={ onMove }

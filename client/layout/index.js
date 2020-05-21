@@ -12,7 +12,7 @@ import { get, isFunction } from 'lodash';
  * WooCommerce dependencies
  */
 import { useFilters, Spinner } from '@woocommerce/components';
-import { getHistory } from '@woocommerce/navigation';
+import { getHistory, getFeatureFlag } from '@woocommerce/navigation';
 import { getSetting } from '@woocommerce/wc-admin-settings';
 import { PLUGINS_STORE_NAME, withPluginsHydration } from '@woocommerce/data';
 
@@ -38,7 +38,7 @@ export class PrimaryLayout extends Component {
 				className="woocommerce-layout__primary"
 				id="woocommerce-layout__primary"
 			>
-				{ window.wcAdminFeatures[ 'store-alerts' ] && (
+				{ getFeatureFlag( 'store-alerts' ) && (
 					<Suspense fallback={ <Spinner /> }>
 						<StoreAlerts />
 					</Suspense>
@@ -92,7 +92,7 @@ class _Layout extends Component {
 
 		// When pathname is `/` we are on the dashboard
 		if ( path.length === 0 ) {
-			path = window.wcAdminFeatures.homepage
+			path = getFeatureFlag( 'homepage' )
 				? 'home_screen'
 				: 'dashboard';
 		}

@@ -1,5 +1,6 @@
 # (unreleased)
 
+- `getFeatureFlag` Get a flag indicating whether a feature is enabled.
 - `getPersistedQuery` Add a filter for extensions to add a persisted query, `woocommerce_admin_persisted_queries`.
 
 # 4.0.0

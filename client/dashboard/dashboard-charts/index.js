@@ -23,6 +23,7 @@ import {
 	MenuTitle,
 	SectionHeader,
 } from '@woocommerce/components';
+import { getFeatureFlag } from '@woocommerce/navigation';
 import { getAllowedIntervalsForQuery } from 'lib/date';
 
 /**
@@ -104,9 +105,8 @@ class DashboardCharts extends Component {
 								</MenuItem>
 							);
 						} ) }
-						{ window.wcAdminFeatures[
-							'analytics-dashboard/customizable'
-						] && (
+						{ getFeatureFlag( 'analytics-dashboard/customizable' )
+						&& (
 							<Controls
 								onToggle={ onToggle }
 								onMove={ onMove }

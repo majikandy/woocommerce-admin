@@ -123,10 +123,19 @@ class Loader {
 	/**
 	 * Gets an array of enabled WooCommerce Admin features/sections.
 	 *
-	 * @return bool Enabled Woocommerce Admin features/sections.
+	 * @return array Enabled Woocommerce Admin features/sections.
 	 */
 	public static function get_features() {
 		return apply_filters( 'woocommerce_admin_features', array() );
+	}
+
+	/**
+	 * Gets an array of WooCommerce Admin features/sections to enable/disable.
+	 *
+	 * @return array Woocommerce Admin features/sections.
+	 */
+	protected static function get_features_to_enable_disable() {
+		return apply_filters( 'woocommerce_admin_features_to_enable_disable', array() );
 	}
 
 	/**
@@ -169,7 +178,7 @@ class Loader {
 	/**
 	 * Returns if the onboarding feature of WooCommerce Admin should be enabled.
 	 *
-	 * While we preform an a/b test of onboarding, the feature will be enabled within the plugin build, but only if the user recieved the test/opted in.
+	 * While we preform an a/b test of onboarding, the feature will be enabled within the plugin build, but only if the user received the test/opted in.
 	 *
 	 * @return bool Returns true if the onboarding is enabled.
 	 */
@@ -853,6 +862,7 @@ class Loader {
 		$settings['wcVersion']         = WC_VERSION;
 		$settings['siteUrl']           = site_url();
 		$settings['onboardingEnabled'] = self::is_onboarding_enabled();
+		$settings['wcAdminFeatures']   = self::get_features_to_enable_disable();
 		$settings['dateFormat']        = get_option( 'date_format' );
 		$settings['plugins']           = array(
 			'installedPlugins' => PluginsHelper::get_installed_plugin_slugs(),

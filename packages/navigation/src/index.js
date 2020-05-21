@@ -168,3 +168,15 @@ export function updateQueryString(
 	const newPath = getNewPath( query, path, currentQuery );
 	getHistory().push( newPath );
 }
+
+/**
+ * Get a feature enabled flag.
+ *
+ * @param {string} feature name.
+ */
+export function getFeatureFlag( feature ) {
+	if ( window.wcSettings.wcAdminFeatures && window.wcSettings.wcAdminFeatures.hasOwnProperty( feature ) ) {
+		return window.wcSettings.wcAdminFeatures[ feature ];
+	}
+	return window.wcAdminFeatures[ feature ];
+}

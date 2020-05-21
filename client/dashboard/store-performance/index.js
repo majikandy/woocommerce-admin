@@ -10,7 +10,7 @@ import { withDispatch } from '@wordpress/data';
  * WooCommerce dependencies
  */
 import { getDateParamsFromQuery } from 'lib/date';
-import { getPersistedQuery } from '@woocommerce/navigation';
+import { getPersistedQuery, getFeatureFlag } from '@woocommerce/navigation';
 import { getSetting } from '@woocommerce/wc-admin-settings';
 import { SETTINGS_STORE_NAME } from '@woocommerce/data';
 
@@ -84,9 +84,8 @@ class StorePerformance extends Component {
 								</MenuItem>
 							);
 						} ) }
-						{ window.wcAdminFeatures[
-							'analytics-dashboard/customizable'
-						] && (
+						{ getFeatureFlag( 'analytics-dashboard/customizable' )
+						&& (
 							<Controls
 								onToggle={ onToggle }
 								onMove={ onMove }

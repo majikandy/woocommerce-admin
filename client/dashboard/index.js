@@ -11,6 +11,7 @@ import './style.scss';
 import withSelect from 'wc-api/with-select';
 import { isOnboardingEnabled } from 'dashboard/utils';
 import { Spinner } from '@woocommerce/components';
+import { getFeatureFlag } from '@woocommerce/navigation';
 
 const CustomizableDashboard = lazy( () =>
 	import( /* webpackChunkName: "customizable-dashboard" */ './customizable' )
@@ -27,7 +28,7 @@ class Dashboard extends Component {
 		if (
 			isOnboardingEnabled() &&
 			! profileItems.completed &&
-			! window.wcAdminFeatures.homepage
+			! getFeatureFlag( 'homepage' )
 		) {
 			return (
 				<Suspense fallback={ <Spinner /> }>
@@ -36,7 +37,7 @@ class Dashboard extends Component {
 			);
 		}
 
-		if ( window.wcAdminFeatures[ 'analytics-dashboard/customizable' ] ) {
+		if ( getFeatureFlag( 'analytics-dashboard/customizable' ) ) {
 			return (
 				<Suspense fallback={ <Spinner /> }>
 					<CustomizableDashboard query={ query } path={ path } />

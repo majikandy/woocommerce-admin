@@ -15,6 +15,7 @@ import {
 	WC_ASSET_URL as wcAssetUrl,
 } from '@woocommerce/wc-admin-settings';
 import { Link } from '@woocommerce/components';
+import { getFeatureFlag } from '@woocommerce/navigation';
 
 /**
  * Internal dependencies
@@ -48,7 +49,7 @@ export function getPaymentMethods( {
 
 	const methods = [];
 
-	if ( window.wcAdminFeatures.wcpay ) {
+	if ( getFeatureFlag( 'wcpay' ) ) {
 		const tosLink = (
 			<Link
 				href={ 'https://wordpress.com/tos/' }
