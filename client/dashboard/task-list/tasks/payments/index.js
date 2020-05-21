@@ -47,10 +47,19 @@ class Payments extends Component {
 	}
 
 	componentDidUpdate( prevProps ) {
+		if ( prevProps === this.props ) {
+			return;
+		}
 		const { createNotice, errors, methods, requesting } = this.props;
 
+		let recommendedMethod = 'stripe';
 		methods.forEach( ( method ) => {
-			const { key, title } = method;
+			const { key, title, visible } = method;
+
+			if ( key === 'wcpay' && visible ) {
+				recommendedMethod = 'wcpay';
+			}
+
 			if (
 				prevProps.requesting[ key ] &&
 				! requesting[ key ] &&
@@ -68,6 +77,12 @@ class Payments extends Component {
 				);
 			}
 		} );
+
+		if ( this.state.recommendedMethod !== recommendedMethod ) {
+			this.setState( {
+				recommendedMethod,
+			} );
+		}
 	}
 
 	completeTask() {
@@ -201,7 +216,7 @@ class Payments extends Component {
 	render() {
 		const currentMethod = this.getCurrentMethod();
 		const { methods, query } = this.props;
-		const { enabledMethods } = this.state;
+		const { enabledMethods, recommendedMethod } = this.state;
 		const configuredMethods = methods.filter(
 			( method ) => method.isConfigured
 		).length;
@@ -218,13 +233,6 @@ class Payments extends Component {
 				</Card>
 			);
 		}
-
-		let recommendedMethod = 'stripe';
-		methods.forEach( ( method ) => {
-			if ( method.key === 'wcpay' && method.visible ) {
-				recommendedMethod = 'wcpay';
-			}
-		} );
 
 		return (
 			<div className="woocommerce-task-payments">
@@ -251,9 +259,12 @@ class Payments extends Component {
 						'woocommerce-task-payment-' + key
 					);
 
-					const isRecommended = key === recommendedMethod && ! isConfigured;
-					const showRecommendedRibbon = isRecommended && key !== 'wcpay';
-					const showRecommendedPill = isRecommended && key === 'wcpay';
+					const isRecommended =
+						key === recommendedMethod && ! isConfigured;
+					const showRecommendedRibbon =
+						isRecommended && key !== 'wcpay';
+					const showRecommendedPill =
+						isRecommended && key === 'wcpay';
 
 					return (
 						<Card key={ key } className={ classes }>
@@ -289,12 +300,8 @@ class Payments extends Component {
 							<div className="woocommerce-task-payment__after">
 								{ container && ! isConfigured ? (
 									<Button
-										isPrimary={
-											key === recommendedMethod
-										}
-										isDefault={
-											key !== recommendedMethod
-										}
+										isPrimary={ key === recommendedMethod }
+										isDefault={ key !== recommendedMethod }
 										onClick={ () => {
 											recordEvent(
 												'tasklist_payment_setup',
