@@ -50,6 +50,24 @@ class InboxPanel extends Component {
 		return unreadNotes.length;
 	}
 
+	getScreenName() {
+		let screenName = '';
+		const urlParams = Object.fromEntries(
+			new URLSearchParams( window.location.search )
+		);
+
+		if ( urlParams.page ) {
+			const currentPage =
+				urlParams.page === 'wc-admin' ? 'home_screen' : urlParams.page;
+			screenName = urlParams.path
+				? urlParams.path.replace( /\//g, '_' ).substring( 1 )
+				: currentPage;
+		} else if ( urlParams.post_type ) {
+			screenName = urlParams.post_type;
+		}
+		return screenName;
+	}
+
 	renderEmptyCard() {
 		return (
 			<ActivityCard
@@ -79,6 +97,7 @@ class InboxPanel extends Component {
 			return this.renderEmptyCard();
 		}
 
+		const screen = this.getScreenName();
 		const notesArray = Object.keys( notes ).map( ( key ) => notes[ key ] );
 
 		return notesArray.map( ( note ) => (
@@ -86,6 +105,7 @@ class InboxPanel extends Component {
 				key={ note.id }
 				note={ note }
 				lastRead={ lastRead }
+				screen={ screen }
 			/>
 		) );
 	}

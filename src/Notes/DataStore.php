@@ -116,6 +116,8 @@ class DataStore extends \WC_Data_Store_WP implements \WC_Object_Data_Store_Inter
 			$this->read_actions( $note );
 			$note->read_meta_data();
 			$note->set_object_read( true );
+			$note->set_layout( $note_row->layout );
+			$note->set_image( $note_row->image );
 
 			/**
 			 * Fires when an admin note is loaded.
@@ -440,7 +442,7 @@ class DataStore extends \WC_Data_Store_WP implements \WC_Object_Data_Store_Inter
 		global $wpdb;
 		return $wpdb->get_col(
 			$wpdb->prepare(
-				"SELECT note_id FROM {$wpdb->prefix}wc_admin_notes WHERE name = %s ORDER BY note_id ASC",
+				"SELECT note_id FROM {$wpdb->prefix}wc_admin_notes WHERE name = %s AND is_deleted = 0 ORDER BY note_id ASC",
 				$name
 			)
 		);
