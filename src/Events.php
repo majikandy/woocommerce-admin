@@ -20,6 +20,7 @@ use \Automattic\WooCommerce\Admin\Notes\WC_Admin_Notes_Personalize_Store;
 use \Automattic\WooCommerce\Admin\Notes\WC_Admin_Notes_WooCommerce_Payments;
 use \Automattic\WooCommerce\Admin\Notes\WC_Admin_Notes_Marketing;
 use \Automattic\WooCommerce\Admin\RemoteInboxNotifications\DataSourcePoller;
+use \Automattic\WooCommerce\Admin\Loader;
 
 /**
  * WC_Admin_Events Class.
@@ -75,6 +76,8 @@ class Events {
 		WC_Admin_Notes_Marketing::possibly_add_note_intro();
 		WC_Admin_Notes_Giving_Feedback_Notes::add_notes_for_admin_giving_feedback();
 
-		DataSourcePoller::poll_data_sources();
+		if ( Loader::is_feature_enabled( 'remote-inbox-notifications' ) ) {
+			DataSourcePoller::poll_data_sources();
+		}
 	}
 }
